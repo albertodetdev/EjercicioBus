@@ -1,6 +1,6 @@
 from bus import Bus
 
-class FlotaBus:
+class FlotaBuses:
     __flotaBuses = []
     
     def __init_(self):

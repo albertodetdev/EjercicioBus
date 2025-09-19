@@ -1,4 +1,5 @@
 from flotaBuses import FlotaBuses
+
 data_dictionary = {
     "option": -1,
     "flota_buses": FlotaBuses,
@@ -50,21 +51,23 @@ def selecciona_bus(data_dictionary):
     data_dictionary["bus_actual"] = option 
 
 def interface_menu(data_dictionary):
-    print("Seleccione una opcion" \
-    "1.- Crea un bus" \
-    "2.- Selecciona tu bus" \
-    "3.- Consulta buses" \
-    "0.- Exit")
-    data_dictionary["option"] = input()
-    while validate_menu_input_int(data_dictionary["option"]) == False:
-        data_dictionary["option"] = int(input())
+    #print("cls")
+    print('''Seleccione una opcion \n
+    1.- Crea un bus \n
+    2.- Selecciona tu bus \n
+    3.- Consulta buses \n
+    0.- Exit''')
+    option = input()
+    while validate_menu_input_int(option) == False:
+        option = input()
+    data_dictionary["option"] = option
     return data_dictionary
 
 data_dictionary["flota_buses"] = FlotaBuses()
 
-while data_dictionary["option"] != 0:
-    data_dictionary["option"] = interface_menu(data_dictionary)
-    if data_dictionary["option"] == 1:
+while data_dictionary["option"] != "0":
+    data_dictionary["option"] = interface_menu(data_dictionary)["option"]
+    if data_dictionary["option"] == "1":
         create_bus(data_dictionary["flota_buses"])
-    elif data_dictionary["option"] == 2:
+    elif data_dictionary["option"] == "2":
         selecciona_bus(data_dictionary)
