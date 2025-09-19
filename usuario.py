@@ -6,7 +6,6 @@ class Usuario:
         self.__id = Usuario.__contador_usuarios
         self.__nombre = nombre
         self.__apellido = apellido
-        self.__billetes = []
 
     def get_id(self):
         return self.__id
@@ -19,14 +18,3 @@ class Usuario:
 
     def get_usuario(self):
         return f"ID: {self.__id}, Nombre: {self.__nombre}, Apellido: {self.__apellido}"
-    
-    def get_billetes(self):
-        return self.__billetes.copy()
-    
-    def agregar_billete(self, billete):
-        self.__billetes.append(billete)
-    
-    def remover_billetes(self, billetes):
-        for billete in billetes:
-            if billete in self.__billetes:
-                self.__billetes.remove(billete)

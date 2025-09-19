@@ -32,24 +32,21 @@ class EstadoVentas:
                 billetes_usuario.append(self.__registro_ventas[billete_id])
         return billetes_usuario
 
-    def venta_billete(self, usuario_id, cantidad = 1):
-        billetes_vendidos = 0 
-        if cantidad <= self.get_plazas_libres:
-            for i in range(cantidad):
-                billete = Billete()
-                self.__registro_ventas[billete.get_id()] = usuario_id
-                billetes_vendidos += 1
-            self.__diccionario_ventas["plazas_ocupadas"] += cantidad
-            self.__diccionario_ventas["plazas_libres"] -= cantidad
-        return billetes_vendidos
+    def venta_billete(self, usuario_id):
+        billete_vendido = False
+        if  self.get_plazas_libres > 0:
+            billete = Billete()
+            self.__registro_ventas[billete.get_id()] = usuario_id
+            self.__diccionario_ventas["plazas_ocupadas"] += 1
+            self.__diccionario_ventas["plazas_libres"] -= 1
+            billete_vendido = True
+        return billete_vendido
 
-    def devolucion_billetes(self, usuario_id, billetes):
-        cantidad_devuelta = 0
-        for billete in billetes:
-            billete_id = billete.get_id()
-            if billete_id in self.__registro_ventas and self.__registro_ventas[billete_id] == usuario_id:
-                del self.__registro_ventas[billete_id]
-                cantidad_devuelta += 1
-        self.__diccionario_ventas["plazas_ocupadas"] -= cantidad_devuelta
-        self.__diccionario_ventas["plazas_libres"] += cantidad_devuelta
-        return cantidad_devuelta
+    def devolucion_billetes(self, usuario_id, billete_id):
+        billete_devuelto = False
+        if billete_id in self.__registro_ventas and self.__registro_ventas[billete_id] == usuario_id:
+            del self.__registro_ventas[billete_id]
+            self.__diccionario_ventas["plazas_ocupadas"] -= 1
+            self.__diccionario_ventas["plazas_libres"] += 1
+            billete_devuelto = True
+        return billete_devuelto
