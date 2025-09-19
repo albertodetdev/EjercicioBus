@@ -3,7 +3,7 @@ class Billete:
     __precio = 100
     
     def __init__(self):
-        Billete.__contador_billetes += 1
+        self.__contador_billetes += 1
         self.__id = Billete.__contador_billetes
         
     def get_billete(self):
