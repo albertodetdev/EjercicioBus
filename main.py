@@ -9,6 +9,7 @@ user_dictionary = {
     "user_name": "",
     "user_surname": ""
 }
+user_array = []
 
 def validate_menu_input_int(input):
     if input.isdigit():
@@ -44,6 +45,14 @@ def selecciona_bus(data_dictionary):
     print(f"Su bus se ha cambiado correctamente a {data_dictionary["flota_buses"].get_bus_by_id(data_dictionary["flota_buses"].get_buses()[option].get_id())}")
     data_dictionary["bus_actual"] = option
 
+def check_if_buses_exist(data_dictionary):
+    check = False
+
+    if len(data_dictionary["flota_buses"].get_buses()) > 0:
+        check = True
+
+    return check
+
 def consulta_buses(data_dictionary):
     opcion = -1
     print("BUSES")
@@ -62,37 +71,59 @@ def print_buses(data_dictionary):
         contador += 1
         print(f"{contador}.- {bus}")
 
-def vender_billetes(data_dictionary):
-    print("Introduzca el nombre del cliente")
-    user_dictionary["name"] = input()
-    print("Introduzca el apellido del cliente")
-    user_dictionary["surname"] = input()
+def vender_billete(data_dictionary, user_array):
+    if check_if_buses_exist or len(user_array) > 0:
+        print("Introduzca el nombre del cliente")
+        user_dictionary["name"] = input()
+        print("Introduzca el apellido del cliente")
+        user_dictionary["surname"] = input()
 
+        client = get_user_by_data(user_dictionary, user_array)
+
+        devolucion_billete = data_dictionary["flota_buses"].get_bus_by_id(data_dictionary["bus_actual"]).get_estado_ventas().devolucion_billetes(client.get_id(), client.get_billetes_by_user_id(client.get_id())[0])
+        
+        if devolucion_billete:
+            print("Se ha realizado la devolucion")
+        else:
+            print("Ha habido un problema")
+    else:
+        print("ha habido un error")
+
+    return data_dictionary
+
+def devolver_billete(data_dictionary, user_array):
+    if check_if_buses_exist or len(user_array) > 0:
+        print("Introduzca el nombre del cliente")
+        user_dictionary["name"] = input()
+        print("Introduzca el apellido del cliente")
+        user_dictionary["surname"] = input()
+
+        client = get_user_by_data(user_dictionary, user_array)
+
+        venta_billete = data_dictionary["flota_buses"].get_bus_by_id(data_dictionary["bus_actual"]).get_estado_ventas().devolucion_billetes(client.get_id(), client.get_billetes_by_user_id(client.get_id())[0])
+        
+        if venta_billete:
+            print("Se ha realizado la devolucion")
+        else:
+            print("Ha habido un problema")
+    else:
+        print("ha habido un error")
+    return data_dictionary
+
+def get_user_by_data(user_dictionary, user_array):
     client = None
-
-    if check_if_user_exists(user_dictionary, data_dictionary["bus_actual"]):
-        for user in data_dictionary["flota_buses"].get_bus_by_id(data_dictionary["bus_actual"]).get_estado_ventas().get_registro.ventas():
-            if user_dictionary["name"].lower() in user.lower() and user_dictionary["surname"].lower() in user.lower():
+    if check_if_user_exists(user_dictionary):
+        for user in user_array:
+            if user_dictionary["name"].lower() in user.get_name().lower() and user_dictionary["surname"].lower() in user.get_surname().lower():
                 client = user
     else:
         client = Usuario(user_dictionary["name"], user_dictionary["surname"])
+    return client
 
-    venta_billete = data_dictionary["flota_buses"].get_bus_by_id(data_dictionary["bus_actual"]).get_estado_ventas().venta_billete(client.get_id())
-    
-    if venta_billete:
-        print("Se ha realizado la venta")
-    else:
-        print("Ha habido un problema")
-
-    return data_dictionary
-
-def devolver_billetes(data_dictionary):
-    return data_dictionary
-
-def check_if_user_exists(user_dictionary, bus_id):
+def check_if_user_exists(user_dictionary, user_array):
     exists = False
-    for user in data_dictionary["flota_buses"].get_bus_by_id(bus_id).get_estado_ventas().get_registro_ventas():
-        if user_dictionary["name"].lower() in user.lower() and user_dictionary["surname"].lower() in user.lower():
+    for user in user_array:
+        if user_dictionary["name"].lower() in user.get_name().lower() and user_dictionary["surname"].lower() in user.get_surname().lower():
             exists = True
     return exists
 
@@ -122,6 +153,6 @@ while data_dictionary["option"] != "0":
     elif data_dictionary["option"] == "3":
         consulta_buses(data_dictionary)
     elif data_dictionary["option"] == "4":
-        data_dictionary = vender_billetes(data_dictionary)
+        data_dictionary = vender_billete(data_dictionary, user_array)
     elif data_dictionary["option"] == "5":
-        data_dictionary = devolver_billetes(data_dictionary)
+        data_dictionary = devolver_billete(data_dictionary, user_array)

@@ -15,6 +15,9 @@ class Usuario:
             self.__nombre = nombre
         if apellido is not None:
             self.__apellido = apellido
-
+    def get_name(self):
+        return self.__nombre
+    def get_surname(self):
+        return self.__apellido
     def get_usuario(self):
         return f"ID: {self.__id}, Nombre: {self.__nombre}, Apellido: {self.__apellido}"
