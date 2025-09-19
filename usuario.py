@@ -2,7 +2,7 @@ class Usuario:
     __contador_usuarios = 0
     
     def __init__(self, nombre, apellido):
-        Usuario.__contador_usuarios += 1
+        self.__contador_usuarios += 1
         self.__id = Usuario.__contador_usuarios
         self.__nombre = nombre
         self.__apellido = apellido
