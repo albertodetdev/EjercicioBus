@@ -13,5 +13,6 @@ class FlotaBuses:
         return bus_to_return
     def get_buses(self):
         return self.__flotaBuses
-    def add_bus(self, bus):
-        self.__flotaBuses.append(bus)
+    def add_bus(self, cantidad, linea):
+        new_bus = Bus(cantidad, linea)
+        self.__flotaBuses.append(new_bus)
