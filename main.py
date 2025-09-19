@@ -1,5 +1,5 @@
 from flotaBuses import FlotaBuses
-
+from usuario import Usuario
 data_dictionary = {
     "option": -1,
     "flota_buses": FlotaBuses,
@@ -61,10 +61,40 @@ def print_buses(data_dictionary):
     for bus in data_dictionary["flota_buses"].get_buses():
         contador += 1
         print(f"{contador}.- {bus}")
+
 def vender_billetes(data_dictionary):
+    print("Introduzca el nombre del cliente")
+    user_dictionary["name"] = input()
+    print("Introduzca el apellido del cliente")
+    user_dictionary["surname"] = input()
+
+    client = None
+
+    if check_if_user_exists(user_dictionary, data_dictionary["bus_actual"]):
+        for user in data_dictionary["flota_buses"].get_bus_by_id(data_dictionary["bus_actual"]).get_estado_ventas().get_registro.ventas():
+            if user_dictionary["name"].lower() in user.lower() and user_dictionary["surname"].lower() in user.lower():
+                client = user
+    else:
+        client = Usuario(user_dictionary["name"], user_dictionary["surname"])
+
+    venta_billete = data_dictionary["flota_buses"].get_bus_by_id(data_dictionary["bus_actual"]).get_estado_ventas().venta_billete(client.get_id())
+    
+    if venta_billete:
+        print("Se ha realizado la venta")
+    else:
+        print("Ha habido un problema")
+
     return data_dictionary
+
 def devolver_billetes(data_dictionary):
     return data_dictionary
+
+def check_if_user_exists(user_dictionary, bus_id):
+    exists = False
+    for user in data_dictionary["flota_buses"].get_bus_by_id(bus_id).get_estado_ventas().get_registro_ventas():
+        if user_dictionary["name"].lower() in user.lower() and user_dictionary["surname"].lower() in user.lower():
+            exists = True
+    return exists
 
 def interface_menu(data_dictionary):
     print("cls")

@@ -11,13 +11,13 @@ class EstadoVentas:
         pass
 
     def get_plazas_totales(self):
-        return self.__diccionario_ventas["plazas_totales"]
+        return int(self.__diccionario_ventas["plazas_totales"])
     
     def get_plazas_libres(self):
-        return self.__diccionario_ventas["plazas_libres"]
+        return int(self.__diccionario_ventas["plazas_libres"])
     
     def get_plazas_ocupadas(self):
-        return self.__diccionario_ventas["plazas_ocupadas"]
+        return int(self.__diccionario_ventas["plazas_ocupadas"])
     
     def get_registro_ventas(self):
         return self.__registro_ventas
@@ -34,11 +34,11 @@ class EstadoVentas:
 
     def venta_billete(self, usuario_id):
         billete_vendido = False
-        if  self.get_plazas_libres > 0:
+        if  self.get_plazas_libres() > 0:
             billete = Billete()
             self.__registro_ventas[billete.get_id()] = usuario_id
-            self.__diccionario_ventas["plazas_ocupadas"] += 1
-            self.__diccionario_ventas["plazas_libres"] -= 1
+            self.__diccionario_ventas["plazas_ocupadas"] = self.get_plazas_ocupadas() + 1
+            self.__diccionario_ventas["plazas_libres"] = self.get_plazas_libres() - 1
             billete_vendido = True
         return billete_vendido
 
@@ -46,7 +46,7 @@ class EstadoVentas:
         billete_devuelto = False
         if billete_id in self.__registro_ventas and self.__registro_ventas[billete_id] == usuario_id:
             del self.__registro_ventas[billete_id]
-            self.__diccionario_ventas["plazas_ocupadas"] -= 1
-            self.__diccionario_ventas["plazas_libres"] += 1
+            self.__diccionario_ventas["plazas_ocupadas"] = self.get_plazas_ocupadas() - 1
+            self.__diccionario_ventas["plazas_libres"] = self.get_plazas_libres() + 1
             billete_devuelto = True
         return billete_devuelto
