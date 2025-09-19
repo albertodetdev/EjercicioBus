@@ -4,7 +4,7 @@ class Billete:
     
     def __init__(self):
         self.__contador_billetes += 1
-        self.__id = Billete.__contador_billetes
+        self.__id = self.__contador_billetes
         
     def get_billete(self):
         return f"ID: {self.__id}, Precio: {self.__precio} pesos"
